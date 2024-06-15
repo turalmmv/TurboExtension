@@ -1,7 +1,6 @@
 package az.turbo.turboextension.dtos.request;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;

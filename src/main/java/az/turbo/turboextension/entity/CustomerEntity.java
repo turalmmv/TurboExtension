@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "customers")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerEntity {
@@ -23,11 +22,11 @@ public class CustomerEntity {
 //    private List<Long> carId;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "benchmarking",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "car_id")
     )
-    List<CarEntity> carEntities;
+    private List<CarEntity> carEntities = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package az.turbo.turboextension.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -78,6 +79,6 @@ public class CarEntity {
 
 
     @ManyToMany(mappedBy = "carEntities")
-    List<CustomerEntity> customerEntities;
+    List<CustomerEntity> customerEntities = new ArrayList<>();
 
 }

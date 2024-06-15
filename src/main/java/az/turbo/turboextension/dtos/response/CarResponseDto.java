@@ -1,5 +1,6 @@
 package az.turbo.turboextension.dtos.response;
 
+import az.turbo.turboextension.entity.CustomerEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,5 +37,6 @@ public class CarResponseDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
+    private CustomerEntity customerEntity;
 
 }
