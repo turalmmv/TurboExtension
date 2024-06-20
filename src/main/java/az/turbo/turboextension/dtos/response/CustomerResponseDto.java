@@ -12,5 +12,4 @@ public class CustomerResponseDto {
     private String name;
     private String email;
     private String password;
-    private List<Long> carId;
 }
