@@ -1,5 +1,6 @@
 package az.turbo.turboextension.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class CarEntity {
 
     @Id
@@ -22,34 +22,44 @@ public class CarEntity {
 
     @Column(name = "city")
     private String city;
-    @Column(name = "milegae")
-    private String mileage;
+    @Column(name = "mark")
+    private String mark;
+    @Column(name = "model")
+    private String model;
     @Column(name = "graduationYear")
     private String graduationYear;
-    @Column(name = "typeOfBan")
-    private String typeOfBan;
+    @Column(name = "banType")
+    private String banType;
     @Column(name = "color")
     private String color;
-    @Column(name = "numberOfSeats")
-    private String numberOfSeats;
     @Column(name = "engine")
     private String engine;
-    @Column(name = "gearbox")
-    private String gearbox;
-    @Column(name = "situation")
-    private String situation;
+    @Column(name = "odometer")
+    private String odometer;
+    @Column(name = "gearBox")
+    private String gearBox;
     @Column(name = "transmitter")
     private String transmitter;
     @Column(name = "isItNew")
-    private Boolean isItNew;
+    private String isItNew;
     @Column(name = "numberOfOwners")
-    private Integer numberOfOwners;
+    private String numberOfOwners;
+    @Column(name = "numberOfSeats")
+    private String numberOfSeats;
+    @Column(name = "situation")
+    private String situation;
+    @Column(name = "region")
+    private String region;
+
+
+
     @Column(name = "credit")
     private Boolean credit;
     @Column(name = "barter")
     private Boolean barter;
-    @Column(name = "isItAnAccident")
-    private Boolean isItAnAccident;
+//    @Column(name = "isItAnAccident")
+//    private Boolean isItAnAccident;
+
     @Column(name = "alloyWheels")
     private Boolean alloyWheels;
     @Column(name = "abs")
@@ -78,7 +88,13 @@ public class CarEntity {
     private Boolean seatVentilation;
 
 
-    @ManyToMany(mappedBy = "carEntities")
-    List<CustomerEntity> customerEntities = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "benchmarking",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id")
+    )
+    @JsonIgnore
+    List<CustomerEntity> customerEntities;
 
 }

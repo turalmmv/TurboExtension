@@ -1,6 +1,5 @@
 package az.turbo.turboextension.dtos.response;
 
-import az.turbo.turboextension.entity.CustomerEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,21 +8,28 @@ import lombok.Setter;
 public class CarResponseDto {
 
     private Long carId;
+
     private String city;
-    private String mileage;
+    private String mark;
+    private String model;
     private String graduationYear;
-    private String typeOfBan;
+    private String banType;
     private String color;
-    private String numberOfSeats;
     private String engine;
+    private String odometer;
     private String gearbox;
-    private String situation;
     private String transmitter;
-    private Boolean isItNew;
-    private Integer numberOfOwners;
+    private String isItNew;
+    private String numberOfOwners;
+    private String numberOfSeats;
+    private String situation;
+    private String region;
+
+
     private Boolean credit;
     private Boolean barter;
-    private Boolean isItAnAccident;
+//    private Boolean isItAnAccident;
+
     private Boolean alloyWheels;
     private Boolean abs;
     private Boolean hatch;
@@ -37,6 +43,5 @@ public class CarResponseDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
-    private CustomerEntity customerEntity;
 
 }
