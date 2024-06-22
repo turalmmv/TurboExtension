@@ -26,8 +26,8 @@ public class CarService {
     //CRUD
     public void create(CarRequestDto carRequestDto){
         CarEntity carEntity = mapDtoToEntity(carRequestDto);
-        List<CustomerEntity> customerEntities = customerRepository.findAllById(carRequestDto.getCustomerId());
-        carEntity.setCustomerEntities(customerEntities);
+//        List<CustomerEntity> customerEntities = customerRepository.findAllById(carRequestDto.getCustomerId());
+//        carEntity.setCustomerEntities(customerEntities);
 
         carRepository.save(carEntity);
     }
@@ -58,19 +58,21 @@ public class CarService {
         return CarEntity.builder()
                 .abs(carRequestDto.getAbs())
                 .city(carRequestDto.getCity())
+                .mark(carRequestDto.getMark())
+                .model(carRequestDto.getModel())
                 .color(carRequestDto.getColor())
                 .alloyWheels(carRequestDto.getAlloyWheels())
                 .barter(carRequestDto.getBarter())
                 .engine(carRequestDto.getEngine())
-                .gearbox(carRequestDto.getGearbox())
+                .gearBox(carRequestDto.getGearBox())
                 .hatch(carRequestDto.getHatch())
                 .credit(carRequestDto.getCredit())
                 .centralLocking(carRequestDto.getCentralLocking())
                 .isItNew(carRequestDto.getIsItNew())
-                .mileage(carRequestDto.getMileage())
+                .odometer(carRequestDto.getOdometer())
                 .airConditioning(carRequestDto.getAirConditioning())
                 .graduationYear(carRequestDto.getGraduationYear())
-                .isItAnAccident(carRequestDto.getIsItAnAccident())
+//                .isItAnAccident(carRequestDto.getIsItAnAccident())
                 .leatherSalon(carRequestDto.getLeatherSalon())
                 .numberOfOwners(carRequestDto.getNumberOfOwners())
                 .numberOfSeats(carRequestDto.getNumberOfSeats())
@@ -82,8 +84,9 @@ public class CarService {
                 .sideCurtains(carRequestDto.getSideCurtains())
                 .situation(carRequestDto.getSituation())
                 .transmitter(carRequestDto.getTransmitter())
-                .typeOfBan(carRequestDto.getTypeOfBan())
+                .banType(carRequestDto.getBanType())
                 .xenonLamps(carRequestDto.getXenonLamps())
+                .region(carRequestDto.getRegion())
                 .build();
     }
 }

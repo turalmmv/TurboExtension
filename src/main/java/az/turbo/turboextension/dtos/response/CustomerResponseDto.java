@@ -1,5 +1,6 @@
 package az.turbo.turboextension.dtos.response;
 
+import az.turbo.turboextension.entity.CarEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +13,5 @@ public class CustomerResponseDto {
     private String name;
     private String email;
     private String password;
+    private List<CarEntity> carEntities;
 }

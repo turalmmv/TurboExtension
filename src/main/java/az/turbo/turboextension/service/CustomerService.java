@@ -26,8 +26,9 @@ public class CustomerService {
 
     //Crud
     public void create(CustomerRequestDto customerRequestDto){
-        CustomerEntity customer = modelMapper.map(customerRequestDto, CustomerEntity.class);
-        customerRepository.save(customer);
+        CustomerEntity customerEntity = mapDtoToEntity(customerRequestDto);
+
+        customerRepository.save(customerEntity);
     }
 
     public List<CustomerResponseDto> read(){
@@ -45,6 +46,15 @@ public class CustomerService {
     public void delete(Long id){
         CustomerEntity customerEntity = customerRepository.findById(id).orElseThrow();
         customerRepository.delete(customerEntity);
+    }
+
+    public CustomerEntity mapDtoToEntity(CustomerRequestDto customerRequestDto){
+        return CustomerEntity.builder()
+                .email(customerRequestDto.getEmail())
+                .name(customerRequestDto.getName())
+                .password(customerRequestDto.getPassword())
+                .carEntities(carRepository.findAllById(customerRequestDto.getCarId()))
+                .build();
     }
 
 

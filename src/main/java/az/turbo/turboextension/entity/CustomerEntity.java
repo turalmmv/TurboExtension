@@ -1,5 +1,6 @@
 package az.turbo.turboextension.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Table(name = "customers")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +21,12 @@ public class CustomerEntity {
     private String name;
     private String email;
     private String password;
-//    private List<Long> carId;
+
+    @ElementCollection
+    private List<Long> carId;
 
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "benchmarking",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "car_id")
-    )
-    private List<CarEntity> carEntities = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.EAGER,mappedBy = "customerEntities")
+    @JsonIgnore
+    private List<CarEntity> carEntities;
 }
