@@ -2,6 +2,7 @@ package az.turbo.turboextension.controller;
 
 import az.turbo.turboextension.dtos.request.CarRequestDto;
 import az.turbo.turboextension.dtos.response.CarResponseDto;
+import az.turbo.turboextension.entity.CarEntity;
 import az.turbo.turboextension.service.CarService;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,11 @@ public class CarController {
     @PutMapping("/update")
     public void update() {
         //configure scheduler
+    }
+
+    @GetMapping("/byIds")
+    public List<CarEntity> getCarsByIds(@RequestParam List<Long> ids) {
+        return carService.getCarsByIds(ids);
     }
 
     @DeleteMapping("/delete")

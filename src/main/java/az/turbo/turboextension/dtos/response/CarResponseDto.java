@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class CarResponseDto {
 
-    private Long carId;
+    private Long id;
 
     private String city;
     private String mark;

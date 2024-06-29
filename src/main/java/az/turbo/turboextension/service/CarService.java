@@ -50,8 +50,9 @@ public class CarService {
     }
 
 
-
-
+    public List<CarEntity> getCarsByIds(List<Long> ids) {
+        return carRepository.findAllById(ids);
+    }
 
 
     public CarEntity mapDtoToEntity(CarRequestDto carRequestDto) {

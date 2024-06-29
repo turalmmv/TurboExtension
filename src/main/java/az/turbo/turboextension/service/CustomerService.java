@@ -2,6 +2,7 @@ package az.turbo.turboextension.service;
 
 import az.turbo.turboextension.dtos.request.CustomerRequestDto;
 import az.turbo.turboextension.dtos.response.CustomerResponseDto;
+import az.turbo.turboextension.entity.CarEntity;
 import az.turbo.turboextension.entity.CustomerEntity;
 import az.turbo.turboextension.repository.CarRepository;
 import az.turbo.turboextension.repository.CustomerRepository;
@@ -49,11 +50,13 @@ public class CustomerService {
     }
 
     public CustomerEntity mapDtoToEntity(CustomerRequestDto customerRequestDto){
+
+        List<CarEntity> carEntities = carRepository.findAllById(customerRequestDto.getIds());
         return CustomerEntity.builder()
                 .email(customerRequestDto.getEmail())
                 .name(customerRequestDto.getName())
                 .password(customerRequestDto.getPassword())
-                .carEntities(carRepository.findAllById(customerRequestDto.getCarId()))
+                .carEntities(carEntities)
                 .build();
     }
 

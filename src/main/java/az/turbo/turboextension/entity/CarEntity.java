@@ -2,24 +2,22 @@ package az.turbo.turboextension.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "cars")
-@Builder
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
-public class CarEntity {
+@Builder
 
+public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
-
+    private Long id;
     @Column(name = "city")
     private String city;
     @Column(name = "mark")
@@ -50,16 +48,12 @@ public class CarEntity {
     private String situation;
     @Column(name = "region")
     private String region;
-
-
-
     @Column(name = "credit")
     private Boolean credit;
-    @Column(name = "barter")
-    private Boolean barter;
 //    @Column(name = "isItAnAccident")
 //    private Boolean isItAnAccident;
-
+    @Column(name = "barter")
+    private Boolean barter;
     @Column(name = "alloyWheels")
     private Boolean alloyWheels;
     @Column(name = "abs")
@@ -88,13 +82,8 @@ public class CarEntity {
     private Boolean seatVentilation;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "benchmarking",
-            joinColumns = @JoinColumn(name = "car_id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_id")
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
     @JsonIgnore
-    List<CustomerEntity> customerEntities;
-
+    CustomerEntity customerEntity;
 }

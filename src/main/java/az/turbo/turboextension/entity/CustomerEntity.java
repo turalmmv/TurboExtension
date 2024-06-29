@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "customers")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,11 +21,10 @@ public class CustomerEntity {
     private String email;
     private String password;
 
-    @ElementCollection
-    private List<Long> carId;
+//    @ElementCollection
+//    private List<Long> carId;
 
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},fetch = FetchType.EAGER,mappedBy = "customerEntities")
-    @JsonIgnore
+    @OneToMany(mappedBy = "customerEntity")
     private List<CarEntity> carEntities;
 }
