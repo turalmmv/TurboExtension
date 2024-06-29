@@ -11,165 +11,161 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Data
 public class JsoupService {
     private final CarRepository carRepository;
-    private List<Boolean> productExtras = new ArrayList<>();
-    private List<String> elementTexts = new ArrayList<>();
-    private List<Boolean> booleans = new ArrayList<>();
-    private List<String> strings = new ArrayList<>();
-
+    private final Map<String, String> productProperties = new HashMap<>();
+    private final List<String> productValue = new ArrayList<>();
+    private final Map<String, Boolean> productLabels = new HashMap<>();
 
     @Scheduled(fixedRate = 30000)
-    public void detachCarInfo() throws IOException {
-        Document document = Jsoup.connect("https://turbo.az/autos/8492685-mercedes-e-300-de").get();
+    public void startPoint() throws IOException {
+        Document document = Jsoup.connect("https://turbo.az/autos/8504590-bmw-528").get();
 
-        Elements elements = document.getElementsByClass("product-properties__i-value");
-        Elements extras = document.getElementsByClass("product-extras__i");
-        Elements credit = document.getElementsByClass("product-labels__i tz-d-flex tz-align-center");
+        List<String> classNames = Arrays.asList(
+                "product-labels__i-icon product-labels__i-icon--loan",
+                "product-labels__i-icon product-labels__i-icon--barter"
+        );
 
-
-        for (Element element : elements) {
-            elementTexts.add(element.text());
+        for (String className : classNames) {
+            Elements elements = document.getElementsByClass(className);
+            String name = className.split("--")[1];
+            checkProductLabels(elements, name);
         }
 
-        for (Element element : extras) {
-            strings.add(element.text());
-        }
-        for (Element element : credit) {
-            strings.add(element.text());
+        printProductLabels(productLabels);
+
+        Elements productPropertiesI = document.getElementsByClass("product-properties__i");
+
+        List<String> desiredAttributes = Arrays.asList(
+                "ad_region", "ad_make_id", "ad_model", "ad_reg_year",
+                "ad_category", "ad_color", "ad_engine_volume", "ad_mileage",
+                "ad_transmission", "ad_gear", "ad_new", "ad_seats_count",
+                "ad_prior_owners_count", "ad_Vəziyyəti", "ad_market"
+        );
+
+        for (String attribute : desiredAttributes) {
+            Element element = productPropertiesI.select("label[for=" + attribute + "]").first();
+            setProductProperties(element);
         }
 
-        checkExtras();
+        printProductProperties(productProperties);
+
+
+        Elements productExtras = document.getElementsByClass("product-extras__i");
+
+        List<String> features = Arrays.asList(
+                "Yüngül lehimli disklər",
+                "ABS",
+                "Lyuk",
+                "Yağış sensoru",
+                "Mərkəzi qapanma",
+                "Park radarı",
+                "Kondisioner",
+                "Oturacaqların isidilməsi",
+                "Dəri salon",
+                "Ksenon lampalar",
+                "Arxa görüntü kamerası",
+                "Yan pərdələr",
+                "Oturacaqların ventilyasiyası"
+        );
+
+        for (String feature : features) {
+            boolean exists = checkFeatureExistence(productExtras, feature);
+            productLabels.put(feature, exists);
+        }
+
+        printProductLabels(productLabels);
+
+
+        setCarRepository();
+
+
     }
 
-//    public static void main(String[] args) throws IOException {
-//        detachCarInfo();
-//
-//    }
+    private boolean checkFeatureExistence(Elements productExtras, String feature) {
+        for (Element extra : productExtras) {
+            if (extra.text().contains(feature)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private void checkProductLabels(Elements element, String name) {
+        Boolean check = !element.isEmpty();
+        productLabels.put(name, check);
+    }
 
-    public void test() {
-        CarEntity carEntity = CarEntity.builder()
-                .city(elementTexts.get(0))
-                .mark(elementTexts.get(1))
-                .model(elementTexts.get(2))
-                .graduationYear(elementTexts.get(3))
-                .banType(elementTexts.get(4))
-                .color(elementTexts.get(5))
-                .engine(elementTexts.get(6))
-                .odometer(elementTexts.get(7))
-                .gearBox(elementTexts.get(8))
-                .transmitter(elementTexts.get(9))
-                .isItNew(elementTexts.get(10))
-                .numberOfSeats(elementTexts.get(11))
-                .numberOfOwners(elementTexts.get(12))
-                .situation(elementTexts.get(13))
-                .region(elementTexts.get(14))
-                .alloyWheels(booleans.get(0))
-                .abs(booleans.get(1))
-                .hatch(booleans.get(2))
-                .rainSensor(booleans.get(3))
-                .centralLocking(booleans.get(4))
-                .parkRadar(booleans.get(5))
-                .airConditioning(booleans.get(6))
-                .seatHeating(booleans.get(7))
-                .leatherSalon(booleans.get(8))
-                .xenonLamps(booleans.get(9))
-                .rearViewCamera(booleans.get(10))
-                .sideCurtains(booleans.get(11))
-                .seatVentilation(booleans.get(12))
-                .credit(booleans.get(13))
-                .barter(booleans.get(14))
-                .build();
+    private void setProductProperties(Element element) {
+        String labelText = "";
+        if (element != null) {
+            labelText = element.text();
+
+            Element spanElement = element.nextElementSibling();
+            String spanText = "";
+            if (spanElement != null) {
+                spanText = spanElement.text();
+            }
+            productProperties.put(labelText, spanText);
+        }
+    }
+
+    public void printProductProperties(Map<String, String> map) {
+        System.out.println("Using entrySet:");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
+    }
+
+    public void printProductLabels(Map<String, Boolean> map) {
+        System.out.println("Using entrySet:");
+        for (Map.Entry<String, Boolean> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
+    }
+
+    public void setCarRepository() {
+        CarEntity carEntity = new CarEntity();
+        carEntity.setCity(productProperties.get("Şəhər"));
+        carEntity.setMark(productProperties.get("Marka"));
+        carEntity.setModel(productProperties.get("Model"));
+        carEntity.setGraduationYear(productProperties.get("Buraxılış ili"));
+        carEntity.setBanType(productProperties.get("Ban növü"));
+        carEntity.setColor(productProperties.get("Rəng"));
+        carEntity.setEngine(productProperties.get("Mühərrik"));
+        carEntity.setOdometer(productProperties.get("Yürüş"));
+        carEntity.setGearBox(productProperties.get("Sürətlər qutusu"));
+        carEntity.setTransmitter(productProperties.get("Ötürücü"));
+        carEntity.setIsItNew(productProperties.get("Yeni"));
+        carEntity.setSituation(productProperties.get("Vəziyyəti"));
+        carEntity.setRegion(productProperties.get("Hansı bazar üçün yığılıb"));
+        carEntity.setNumberOfSeats(productProperties.get("Yerlərin sayı"));
+        carEntity.setNumberOfOwners(productProperties.get("Sahiblər"));
+
+        carEntity.setAlloyWheels(productLabels.get("Yüngül lehimli disklər"));
+        carEntity.setAbs(productLabels.get("ABS"));
+        carEntity.setHatch(productLabels.get("Lyuk"));
+        carEntity.setRainSensor(productLabels.get("Yağış sensoru"));
+        carEntity.setCentralLocking(productLabels.get("Mərkəzi qapanma"));
+        carEntity.setParkRadar(productLabels.get("Park radarı"));
+        carEntity.setAirConditioning(productLabels.get("Kondisioner"));
+        carEntity.setSeatHeating(productLabels.get("Oturacaqların isidilməsi"));
+        carEntity.setLeatherSalon(productLabels.get("Dəri salon"));
+        carEntity.setXenonLamps(productLabels.get("Ksenon lampalar"));
+        carEntity.setRearViewCamera(productLabels.get("Arxa görüntü kamerası"));
+        carEntity.setSideCurtains(productLabels.get("Yan pərdələr"));
+        carEntity.setSeatVentilation(productLabels.get("Oturacaqların ventilyasiyası"));
+
+        carEntity.setCredit(productLabels.get("loan"));
+        carEntity.setBarter(productLabels.get("barter"));
+
+        System.out.println(carEntity);
 
         carRepository.save(carEntity);
-
-    }
-
-    public void checkExtras() {
-        if (strings.contains("Yüngül lehimli disklər")) {
-            booleans.add(0, true);
-        } else {
-            booleans.add(0, false);
-        }
-        if (strings.contains("ABS")) {
-            booleans.add(1, true);
-        } else {
-            booleans.add(1, false);
-        }
-        if (strings.contains("Lyuk")) {
-            booleans.add(2, true);
-        } else {
-            booleans.add(2, false);
-        }
-        if (strings.contains("Yağış sensoru")) {
-            booleans.add(3, true);
-        } else {
-            booleans.add(3, false);
-        }
-        if (strings.contains("Mərkəzi qapanma")) {
-            booleans.add(4, true);
-        } else {
-            booleans.add(4, false);
-        }
-        if (strings.contains("Park radarı")) {
-            booleans.add(5, true);
-        } else {
-            booleans.add(5, false);
-        }
-        if (strings.contains("Kondisioner")) {
-            booleans.add(6, true);
-        } else {
-            booleans.add(6, false);
-        }
-        if (strings.contains("Oturacaqların isidilməsi")) {
-            booleans.add(7, true);
-        } else {
-            booleans.add(7, false);
-        }
-        if (strings.contains("Dəri salon")) {
-            booleans.add(8, true);
-        } else {
-            booleans.add(8, false);
-        }
-        if (strings.contains("Ksenon lampalar")) {
-            booleans.add(9, true);
-        } else {
-            booleans.add(9, false);
-        }
-        if (strings.contains("Arxa görüntü kamerası")) {
-            booleans.add(10, true);
-        } else {
-            booleans.add(10, false);
-        }
-        if (strings.contains("Yan pərdələr")) {
-            booleans.add(11, true);
-        } else {
-            booleans.add(11, false);
-        }
-        if (strings.contains("Oturacaqların ventilyasiyası")) {
-            booleans.add(12, true);
-        } else {
-            booleans.add(12, false);
-        }
-        if (strings.contains("Kredit")) {
-            booleans.add(13, true);
-        } else {
-            booleans.add(13, false);
-        }
-        if (strings.contains("Barter")) {
-            booleans.add(14, true);
-        } else {
-            booleans.add(14, false);
-        }
-
-        test();
-
     }
 
 
