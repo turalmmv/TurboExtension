@@ -34,7 +34,7 @@ dependencies {
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.2.3'
-	implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.1'
+	implementation group: 'org.jsoup', name: 'jsoup', version: '1.15.3'
 }
 
 tasks.named('test') {
