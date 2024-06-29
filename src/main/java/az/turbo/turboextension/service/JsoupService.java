@@ -21,8 +21,9 @@ public class JsoupService {
     private final List<String> productValue = new ArrayList<>();
     private final Map<String, Boolean> productLabels = new HashMap<>();
 
-     public void startPoint(String url) throws IOException {
-        Document document = Jsoup.connect(url).get();
+    @Scheduled(fixedRate = 30000)
+    public void startPoint() throws IOException {
+        Document document = Jsoup.connect("https://turbo.az/autos/8504590-bmw-528").get();
 
         List<String> classNames = Arrays.asList(
                 "product-labels__i-icon product-labels__i-icon--loan",

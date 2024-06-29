@@ -13,5 +13,5 @@ public class CustomerResponseDto {
     private String name;
     private String email;
     private String password;
-    private List<CarEntity> carEntities;
+    private List<CarEntity> carEntity;
 }

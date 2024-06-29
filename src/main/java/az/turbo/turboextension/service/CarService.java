@@ -3,7 +3,6 @@ package az.turbo.turboextension.service;
 import az.turbo.turboextension.dtos.request.CarRequestDto;
 import az.turbo.turboextension.dtos.response.CarResponseDto;
 import az.turbo.turboextension.entity.CarEntity;
-import az.turbo.turboextension.entity.CustomerEntity;
 import az.turbo.turboextension.repository.CarRepository;
 import az.turbo.turboextension.repository.CustomerRepository;
 import lombok.*;
@@ -57,6 +56,7 @@ public class CarService {
 
     public CarEntity mapDtoToEntity(CarRequestDto carRequestDto) {
         return CarEntity.builder()
+                .customerId(carRequestDto.getCustomerId())
                 .abs(carRequestDto.getAbs())
                 .city(carRequestDto.getCity())
                 .mark(carRequestDto.getMark())
@@ -73,7 +73,6 @@ public class CarService {
                 .odometer(carRequestDto.getOdometer())
                 .airConditioning(carRequestDto.getAirConditioning())
                 .graduationYear(carRequestDto.getGraduationYear())
-//                .isItAnAccident(carRequestDto.getIsItAnAccident())
                 .leatherSalon(carRequestDto.getLeatherSalon())
                 .numberOfOwners(carRequestDto.getNumberOfOwners())
                 .numberOfSeats(carRequestDto.getNumberOfSeats())

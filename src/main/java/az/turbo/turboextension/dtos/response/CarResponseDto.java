@@ -8,7 +8,6 @@ import lombok.Setter;
 public class CarResponseDto {
 
     private Long id;
-
     private String city;
     private String mark;
     private String model;
@@ -24,12 +23,8 @@ public class CarResponseDto {
     private String numberOfSeats;
     private String situation;
     private String region;
-
-
     private Boolean credit;
     private Boolean barter;
-//    private Boolean isItAnAccident;
-
     private Boolean alloyWheels;
     private Boolean abs;
     private Boolean hatch;
@@ -43,5 +38,6 @@ public class CarResponseDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
+    private Long customerId;
 
 }

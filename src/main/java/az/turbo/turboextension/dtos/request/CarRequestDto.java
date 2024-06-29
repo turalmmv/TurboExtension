@@ -3,7 +3,6 @@ package az.turbo.turboextension.dtos.request;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -24,13 +23,8 @@ public class CarRequestDto {
     private String numberOfSeats;
     private String situation;
     private String region;
-
-
-
     private Boolean credit;
     private Boolean barter;
-//    private Boolean isItAnAccident;
-
     private Boolean alloyWheels;
     private Boolean abs;
     private Boolean hatch;
@@ -44,6 +38,7 @@ public class CarRequestDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
+    private Long customerId;
 
 
 }
