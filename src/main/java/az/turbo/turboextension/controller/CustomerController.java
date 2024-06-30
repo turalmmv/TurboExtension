@@ -3,6 +3,7 @@ package az.turbo.turboextension.controller;
 import az.turbo.turboextension.dtos.request.CustomerRequestDto;
 import az.turbo.turboextension.dtos.response.CustomerResponseDto;
 import az.turbo.turboextension.service.CustomerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("customer")
 @Data
+@SecurityRequirement(name = "Bearer Authentication")
 public class CustomerController {
     private final CustomerService customerService;
 
