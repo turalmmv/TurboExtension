@@ -1,4 +1,4 @@
-package az.turbo.turboextension.service;
+package az.turbo.turboextension;
 
 import az.turbo.turboextension.entity.CarEntity;
 import az.turbo.turboextension.repository.CarRepository;
@@ -7,22 +7,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.*;
 
-@Service
 @Data
-public class JsoupService {
-    private final CarRepository carRepository;
-    private final Map<String, String> productProperties = new HashMap<>();
-    private final List<String> productValue = new ArrayList<>();
-    private final Map<String, Boolean> productLabels = new HashMap<>();
+public class test2 {
+    private static CarRepository carRepository;
+    private static Map<String, String> productProperties = new HashMap<>();
+    private static List<String> productValue = new ArrayList<>();
 
-    @Scheduled(fixedRate = 30000)
-    public void startPoint() throws IOException {
-        Document document = Jsoup.connect("https://turbo.az/autos/8504590-bmw-528").get();
+    private static Map<String, Boolean> productLabels = new HashMap<>();
+
+
+    public static void main(String[] args) throws IOException {
+        Document document = Jsoup.connect("https://turbo.az/autos/8551112-chevrolet-cruze").get();
 
         List<String> classNames = Arrays.asList(
                 "product-labels__i-icon product-labels__i-icon--loan",
@@ -85,7 +84,7 @@ public class JsoupService {
 
     }
 
-    private boolean checkFeatureExistence(Elements productExtras, String feature) {
+    private static boolean checkFeatureExistence(Elements productExtras, String feature) {
         for (Element extra : productExtras) {
             if (extra.text().contains(feature)) {
                 return true;
@@ -94,12 +93,12 @@ public class JsoupService {
         return false;
     }
 
-    private void checkProductLabels(Elements element, String name) {
+    private static void checkProductLabels(Elements element, String name) {
         Boolean check = !element.isEmpty();
         productLabels.put(name, check);
     }
 
-    private void setProductProperties(Element element) {
+    private static void setProductProperties(Element element) {
         String labelText = "";
         if (element != null) {
             labelText = element.text();
@@ -113,21 +112,21 @@ public class JsoupService {
         }
     }
 
-    public void printProductProperties(Map<String, String> map) {
+    public static void printProductProperties(Map<String, String> map) {
         System.out.println("Using entrySet:");
         for (Map.Entry<String, String> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
         }
     }
 
-    public void printProductLabels(Map<String, Boolean> map) {
+    public static void printProductLabels(Map<String, Boolean> map) {
         System.out.println("Using entrySet:");
         for (Map.Entry<String, Boolean> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
         }
     }
 
-    public void setCarRepository() {
+    public static void setCarRepository() {
         CarEntity carEntity = new CarEntity();
         carEntity.setCity(productProperties.get("Şəhər"));
         carEntity.setMark(productProperties.get("Marka"));
@@ -164,7 +163,7 @@ public class JsoupService {
 
         System.out.println(carEntity);
 
-        carRepository.save(carEntity);
+//        carRepository.save(carEntity);
     }
 
 
