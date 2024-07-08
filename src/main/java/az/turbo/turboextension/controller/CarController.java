@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/car")
 @Data
 @SecurityRequirement(name = "Bearer Authentication")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CarController {
     private final CarService carService;
 

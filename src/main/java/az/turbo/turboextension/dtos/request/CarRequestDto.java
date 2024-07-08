@@ -38,7 +38,6 @@ public class CarRequestDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
-    private Long customerId;
 
 
 }

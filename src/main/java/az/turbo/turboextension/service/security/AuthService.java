@@ -1,10 +1,13 @@
 package az.turbo.turboextension.service.security;
 
+//import az.turbo.turboextension.dtos.request.ConfirmRequestDto;
+
 import az.turbo.turboextension.dtos.request.ConfirmRequestDto;
 import az.turbo.turboextension.dtos.security.request.AuthRequestDTO;
 import az.turbo.turboextension.dtos.security.request.RegisterRequestDTO;
 import az.turbo.turboextension.dtos.security.response.AuthResponseDTO;
 import az.turbo.turboextension.entity.security.PersonEntity;
+import az.turbo.turboextension.repository.security.PersonRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -29,6 +32,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender javaMailSender;
+    private final PersonRepository personRepository;
     private Random random = new Random();
     private Integer confirmation = random.nextInt(1000, 9999);
 
@@ -48,7 +52,7 @@ public class AuthService {
         } else if (!dto.getPassword().matches(".*\\d+.*")) {
             log.error("User's pass doesn't contain a number.");
             throw new RuntimeException("User's pass doesn't contain a number.");
-        } else if (dto.getPassword().length() != 8) {
+        } else if (dto.getPassword().length() < 8) {
             log.error("User's pass length less than 8.");
             throw new RuntimeException("User's pass length less than 8.");
         }
@@ -104,5 +108,10 @@ public class AuthService {
             return "Email confirmed successfully!\nThank you for your registration!";
         }
         return "Invalid information code...";
+    }
+
+
+    public boolean checkEmailExists(String email) {
+        return personRepository.existsByEmail(email);
     }
 }

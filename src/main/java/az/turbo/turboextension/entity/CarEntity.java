@@ -49,6 +49,5 @@ public class CarEntity {
     private Boolean sideCurtains;
     private Boolean seatVentilation;
 
-    private Long customerId;
 
 }
