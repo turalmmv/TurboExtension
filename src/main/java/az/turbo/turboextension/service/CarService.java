@@ -4,7 +4,6 @@ import az.turbo.turboextension.dtos.request.CarRequestDto;
 import az.turbo.turboextension.dtos.response.CarResponseDto;
 import az.turbo.turboextension.entity.CarEntity;
 import az.turbo.turboextension.repository.CarRepository;
-import az.turbo.turboextension.repository.CustomerRepository;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -19,15 +18,11 @@ import java.util.stream.Collectors;
 public class CarService {
     private final ModelMapper modelMapper;
     private final CarRepository carRepository;
-    private final CustomerRepository customerRepository;
 
 
     //CRUD
     public void create(CarRequestDto carRequestDto){
         CarEntity carEntity = mapDtoToEntity(carRequestDto);
-//        List<CustomerEntity> customerEntities = customerRepository.findAllById(carRequestDto.getCustomerId());
-//        carEntity.setCustomerEntities(customerEntities);
-
         carRepository.save(carEntity);
     }
 
@@ -56,7 +51,6 @@ public class CarService {
 
     public CarEntity mapDtoToEntity(CarRequestDto carRequestDto) {
         return CarEntity.builder()
-                .customerId(carRequestDto.getCustomerId())
                 .abs(carRequestDto.getAbs())
                 .city(carRequestDto.getCity())
                 .mark(carRequestDto.getMark())

@@ -38,6 +38,5 @@ public class CarResponseDto {
     private Boolean rearViewCamera;
     private Boolean sideCurtains;
     private Boolean seatVentilation;
-    private Long customerId;
 
 }

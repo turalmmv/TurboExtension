@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/person")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class PersonController {
     private final PersonService service;
     private final PasswordEncoder passwordEncoder;

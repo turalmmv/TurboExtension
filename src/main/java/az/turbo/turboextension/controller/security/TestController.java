@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/test")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class TestController {
     private final JwtService jwtService;
 
